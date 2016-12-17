@@ -22,6 +22,35 @@
 
   <style>
 
+
+    /* ******************************************************************************************
+     * La pseudo-classe :root permet de cibler la racine de l'arbre représentant le document.   *
+     * Pour un document HTML, :root ciblera donc l'élément <html> et aura le même comportement  *
+     * que le sélecteur html mais sa spécificité sera plus forte.                               *
+     ********************************************************************************************/
+
+    :root{
+      --base:#ffc600;
+      --spacing:10px;
+      --blur: 10px;
+    }
+    img{
+      padding: var(--spacing);/*on met des tirets pour signifier que c'est une variable*/
+      background: var(--base);
+      filter: blur(var(--blur));
+
+      /********************************************************************************************
+      * La propriété filter permet d'appliquer des filtres et d'obtenir des                       *
+      * effets graphiques de flou, de saturation, etc. Les filtres                                *
+      * sont généralement utilisés pour ajuster le rendu d'une image, d'un arrière-plan ou        *
+      * des bordures.                                                                             *
+      **********************************************************************************************/
+    }
+
+    .hl{
+      color: var(--base);
+    }
+
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -48,6 +77,35 @@
   </style>
 
   <script>
+    //on recupere les inputs
+    const inputs= document.querySelectorAll('.controls input');
+    console.log(inputs);
+
+    /***************************************************************************************************
+    * les nodeslists ne sont pas des tableau, elle n'ont pas les même propriété                        *
+    * tips : pour connaitre les propriété d'un objet on l'affiche dans la console et on a le prototype *
+    * qui nous dit ce qu'on peu faire avec.                                                            *
+     * *********************************************************************************************** */
+
+    function handleUpdate() {
+      //l'évent nous renvoi la valeur qui a changer sur les curseur input
+      const suffix = this.dataset.sizing || ''; //si l'élément attribue sizzing on le renvoi sinon rien
+
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+
+
+      /**************************************************************************************************
+       * La propriété HTMLElement.dataset en lecture seule permet l'accès, à la fois en mode lecture    *
+       * et écriture, à tous les attributs de données sur mesure (data-*) définis sur l'élément.        *
+       * C'est un tableau associatif de DOMString (map of DOMString), une entrée pour chaque attribut   *
+       * de données sur mesure.                                                                         *
+       **************************************************************************************************/
+    }
+    /*Recupération de l'evenement changement sur les curseur*/
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    //on recuperer aussi les mouvement de la souris pour faire une prévisus
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
   </script>
 
 </body>
